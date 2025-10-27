@@ -1,0 +1,92 @@
+power bi project
+
+- analyze and clean data
+
+in power bi get the excel sheet and select transform data to perform data cleaning.
+
+go through the complete sheet and merge day, month, year column to one column named date and change its data type to date.
+
+remove the day, month, year column and also the day name column coz it has few errors like sat and Saturday not complete or good data.
+we can change the day name column to the correct order from selecting the date column and choosing day name, since I don't require day name for this project I am removing this column.
+
+renamed this file to Sales_Data and then close and apply.
+
+- create custom calendar
+go to transform data , new source, blank query and type - = List.Dates(#date(2021,1,1) ,1461,#duration(1,0,0,0))
+
+fyi- date format y,m,d .  1461 is the no. of days in 2021 - 2024 . duration format day, hr, min, sec
+ 
+added name of day just for reference.
+renamed it to Custom_Calendar and then close and apply.
+
+- data model tab - create relationship
+
+in model view- sales_data known as fact table/ data table and custom_calendar known as dimension table.
+
+created a one to many relationship for date from custom_calendar to sales_data.
+
+- dax calculations
+
+using dax create total sales - Total_Sales = SUMX(Sales_Data,Sales_Data[Units Sold]*Sales_Data[Price Per Unit]) 
+
+create transactions - Transactions = COUNTROWS(Sales_Data) 
+create average_price - Average_Price = AVERAGE(Sales_Data[Price Per Unit]) 
+create total_quantity - Total_Quantity = SUM(Sales_Data[Units Sold]) 
+
+- dashboard creation
+download necessary images for use.
+using button slicer create months from custom_calander - date- date hieraricy- month and do necessary editing to fit in dashboard.
+
+use new card and add total_sales, total_quantity, transcations, average_price and edit and place where necessary.
+
+use normal slicer and add mobile model, payment method, brand - separately and edit it to make a dropdown box.
+
+CREATE map chart and add city in location and total sales in bubbles , do necessary editing and place where required.
+
+create a line chart and add date - month from custom_calender in x-axis and total_quantity in y-axis and necessary editing.
+
+in table view add new column - Rating Status = IF(Sales_Data[Customer Ratings]>=4,"Good",
+IF(Sales_Data[Customer Ratings]>2,"Average","Poor"))
+
+create funnel chart and add rating status in category and customer ratings in values but change it from sum to count.
+
+create a pie chart and add payment method in legend and transcations in values. edit it to show only total percentage.
+
+create clustered bar chart and add total_sales in x-axis and mobile model in y-axis. in filters go to mobile model and change filter type to top n , show items to top , 3 and add total_sales in by values.
+
+create a area chart with day name from custom_calender in x-axis and total_sales rom sales_data in y-axis.
+create a table with brand, total_sales, and transactions in columns.
+
+- edit interactions
+go to format and click on edit interaction and click on the months slicer and then the line chart of total quantity by none and select none.
+
+- MTD, QTD and YTD DAX functions (month to date, year to date, quarter to date)
+create a duplicate dashboard , rename it as mtd report and remove all the visual charts.
+create a new measure in sales_date as mtd - MTD = TOTALMTD([Total_Sales],Custom_Calendar[Date].[Date])
+
+OTD and YTD also have the same formulae, just have to change the name.
+
+create a table and add date from custom_calander and mtd and total_sales from sales_data.
+convert it to line chart, from the previous dashboard copy the months and add it here and in place of the brand slicer add date it to.
+
+- same period last year
+create a duplicate dashboard from mtd report and remove the line chart.
+create a table add date from custom_calander (only year and quater), total_sales, and same period last year.
+
+copy the same table to create a clustered column chart, make three charts one for total_sales and same period last year by year, another by quarter and one more by month.
+
+go to insert - buttons - navigator - page navigator , do necessary editing and place it in all the three sheets.
+
+- dax query in power bi
+working around dax query and just seeing all the measures used.
+
+- create another page
+create another page just for reference as a summary or Q & A , by double clicking on the empty dashboard and can type the questions.
+
+- upload dashboard on power bi services. (didn't do this step)
+need to have business email/ account to use this.
+sign in to power bi using business mail id.
+go to my workspace, create new folder for the project and then upload the saved power bi project file (pbix file).
+open the file then select file- embed report- publish to web and done. can copy the link to use or share.
+
+- done....
